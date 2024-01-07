@@ -1,0 +1,15 @@
+class Solution {
+    public int missingNumber(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int missingNumber = n;
+        if(nums[0] != 0) return 0;
+        for(int i=1;i<n;i++){
+            if(i!=nums[i]){
+                missingNumber = i;
+                break;
+            }
+        }
+        return missingNumber;
+    }
+}
