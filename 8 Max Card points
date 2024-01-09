@@ -1,0 +1,43 @@
+class Solution {
+    public int maxScore(int[] cardPoints, int k) {
+        int n = cardPoints.length;
+        int cur = 0;
+        for(int i = 0; i < k; i++){
+            cur += cardPoints[i];
+        }
+        int back = k - 1;
+        int ans = cur;
+        for(int j = n - 1 ; j >= n-k; j--){
+            cur += cardPoints[j];
+            cur -= cardPoints[back];
+            back--;
+            ans = Math.max(ans, cur);
+        }
+        return ans;
+       /*int n = cardPoints.length;
+        int[] prefixarr = prefixSum(cardPoints, n);
+        int[] suffixarr = suffixSum(cardPoints, n);
+        int ans = Integer.MIN_VALUE;
+        ans = Math.max(prefixarr[k-1], suffixarr[n-k]);
+        for(int i=1;i<k;i++){
+            ans = Math.max(ans, (prefixarr[i-1]+suffixarr[n-k+i]));
+        }
+        return ans;*/
+    }
+    public int[] suffixSum(int[] cardPoints, int n){
+        int[] arr = new int[n];
+        arr[n-1] = cardPoints[n-1];
+        for(int i = n-2; i>=0;i--){
+            arr[i] = arr[i+1]+cardPoints[i];
+        }
+        return arr;
+    }
+    public int[] prefixSum(int[] cardPoints,int n){
+        int[] arr = new int[n];
+        arr[0] = cardPoints[0];
+        for(int i = 1;i<n;i++){
+            arr[i] = arr[i-1]+cardPoints[i];
+        }
+        return arr;
+    }
+}
