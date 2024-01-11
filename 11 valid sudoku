@@ -1,0 +1,73 @@
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        for(int row=0;row<9;row++){
+            for(int col=0;col<9;col++){
+                if(board[row][col] != '.'){
+                    boolean isValid = isValid(board, row, col);
+                    if(isValid == false) return false;
+                }
+              // if(!isValid(board, row, col)) return false;
+            }
+        }
+        return true;
+    }
+    private boolean isValid(char[][] board, int row, int col){
+        // check for row
+        for(int j=0;j<9;j++){
+            if(j!=col && board[row][j] == board[row][col]) return false;
+        }
+        // check for col
+        for(int i=0;i<9;i++){
+            if(i!= row && board[i][col] == board[row][col]) return false;
+        }
+        // check for blocks
+        int newRow = row - row % 3;
+        int newCol = col - col % 3;
+        for(int i = newRow; i < newRow+3; i++){
+            for(int j = newCol; j < newCol+3; j++){
+                if(i == row && j == col) continue;
+                if(board[i][j] == board[row][col]) return false;
+            }
+        }
+        return true;
+    }
+   /* private boolean isValid(char[][] board, int row, int col){
+        //check for rows
+        boolean isValidRow = isValidRow(board, row);
+        //check for columns
+        boolean isValidCol = isValidCol(board, col);
+        //check for 3*3 blocks
+        boolean isValidBlock = isValidBlock(board, row, col);
+        return isValidRow && isValidCol && isValidBlock;
+    }
+    private boolean isValidRow(char[][] board, int row){
+        HashSet<Character> hsRow = new HashSet<>();
+        for(int col=0;col<9;col++){
+            if(hsRow.contains(board[row][col])) return false;
+            if(board[row][col] != '.')hsRow.add(board[row][col]);
+        }
+        return true;
+    }
+    private boolean isValidCol(char[][] board, int col){
+        HashSet<Character> hsCol = new HashSet<>();
+        for(int row=0;row<9;row++){
+            if(hsCol.contains(board[row][col])) return false;
+            if(board[row][col] != '.') hsCol.add(board[row][col]);
+        }
+        return true;
+    }
+    private boolean isValidBlock(char[][] board, int nrow, int ncol){
+        int newRow = nrow - nrow % 3;
+        int newCol = ncol - ncol % 3;
+        HashSet<Character> hsBlock = new HashSet<>();
+        for(int row=0;row<3;row++){
+            for(int col=0;col<3;col++){
+                int currRow = row+newRow;
+                int currCol = col+newCol;
+                if(hsBlock.contains(board[currRow][currCol])) return false;
+                if(board[currRow][currCol] != '.') hsBlock.add(board[currRow][currCol]);
+            }
+        }
+        return true;
+    }*/
+}
