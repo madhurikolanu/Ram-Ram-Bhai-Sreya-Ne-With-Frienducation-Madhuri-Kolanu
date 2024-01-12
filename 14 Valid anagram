@@ -1,0 +1,40 @@
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        /*int n = s.length();
+        int m = t.length();
+        List<Character> ch = new ArrayList<Character>();
+        for(int i=0;i<n;i++){
+            ch.add(s.charAt(i));
+        }
+        for(int j=0;j<m;j++){
+            if(!ch.contains(t.charAt(j))) return false;
+            else ch.remove(Character.valueOf(t.charAt(j)));
+        }
+        if(ch.size() == 0) return true;
+        return false;*/
+
+        // length of s string
+        int n = s.length();
+         // length of t string
+        int m = t.length();
+        // if lengths of given two strings are not equal then t cannot be anagram of s
+        if(n != m) return false;
+
+        // int array for all alphabets
+        int[] charArray = new int[26];
+
+        //to store the frequency of all characters present in s
+         for(char schar : s.toCharArray()){
+            map[schar-'a']++;
+        }
+        //to remove the frequency of all characters present in t
+        for(char tchar : t.toCharArray()){
+           map[tchar-'a']--;
+        }
+        // see if there are any leftover characters frequency
+        for(int k : map){
+            if(k!= 0) return false;
+        }
+        return true;
+    }
+}
