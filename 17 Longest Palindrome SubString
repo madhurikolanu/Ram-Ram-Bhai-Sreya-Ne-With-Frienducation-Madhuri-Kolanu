@@ -1,0 +1,39 @@
+class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+
+        // fast checks for solution
+        if(n <2) return s;
+        if(n == 2) if(s.charAt(0) == s.charAt(1)) return s;
+
+        String longestPal = s.substring(0, 1);
+        char [] str = s.toCharArray();
+
+        for (int i = 1; i < n; i++){
+            String temp = "";
+            // first check for odd one
+            if(i+1 < n && str[i-1] == str[i+1]){
+                int right = i+1;
+                int left = i-1;
+                while (left >=0 && right < n && str[left] == str[right]) {
+                    left--;
+                    right++;
+                }
+                temp = s.substring(left+1, right);
+            }
+            // second check for even
+            if(str[i] == str[i-1]){
+                int left = i-1;
+                int right = i;
+                while (left >=0 && right < n && str[left] == str[right]) {
+                    left--;
+                    right++;
+                }
+                // if both check has palindrome we will get longest
+               temp = temp.length() < s.substring(left+1, right).length() ? s.substring(left+1, right) : temp;
+            }
+            longestPal = longestPal.length() >= temp.length() ? longestPal : temp;
+        }
+        return longestPal;
+    }
+}

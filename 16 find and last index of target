@@ -1,0 +1,64 @@
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        // length of given array
+        int n = nums.length;
+        int[] ans = new int[2];
+        // initialize the array of first two positions to -1
+        ans[0] = -1;
+        ans[1] = -1;
+        // to find the starting index of given target in nums array
+        int firstIndex = binarySearch(nums, target, true);
+        // if there is no target present in nums array
+        if(firstIndex == -1) return ans;
+        // to find the ending index of given target in nums array
+        int secondIndex = binarySearch(nums, target, false);
+        //assign the firstindex of target into ans index of 0
+        ans[0] = firstIndex;
+        //assign the firstindex of target into ans index of 1
+        ans[1] = secondIndex;
+        return ans;
+    }
+    private int binarySearch(int[] nums, int target, boolean findStartIndex){
+        int low = 0;
+        int high = nums.length - 1;
+        int targetElement = -1;
+        while(low <= high){
+            int mid = (low + high) / 2;
+            // if target is found
+            if(nums[mid] == target){
+                targetElement = mid;
+                // if it is to find the starting index update the high value to mid-1
+                if(findStartIndex)  high = mid - 1;
+                // if it is to find the ending index update the low value to mid+1
+                else low = mid + 1;
+            }
+            else if(nums[mid] < target){
+                low = mid + 1;
+            }
+            else high = mid - 1;
+        }
+        return targetElement;
+    }
+       /* int p1 = 0;
+        int p2 = n-1;
+        int[] ans = new int[2];
+        ans[0] = -1;
+        ans[1] = -1;
+        while(p1 <= p2){
+            if(nums[p1] == target){
+                ans[0] = p1;
+            }
+            else{
+                p1++;
+            }
+            if(nums[p2] == target){
+                ans[1] = p2;
+            }
+            else{
+                p2--;
+            }
+            if(ans[0] != -1 && ans[1] != -1) break;
+        }
+        return ans;
+    }*/
+}
