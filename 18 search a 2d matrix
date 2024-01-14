@@ -1,0 +1,25 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        // low pointer starts from 0th element
+        int low = 0;
+        // high pointer starts from last element
+        int high = m * n - 1;
+        // loop the entire matrix until we find the target
+        while(low <= high){
+            // mid pointer
+            int mid = low + (high - low) / 2;
+            // get the mid pointer value by consider row as mid/m and col as mid%m
+            int mid_val = matrix[mid / m][mid % m];
+
+            // if target is found
+            if(mid_val == target) return true;
+            // if mid val is less than target update low pointer
+            else if(mid_val < target) low = mid + 1;
+            // if mid val is greater than target update high pointer
+            else high = mid - 1;
+        }
+        return false;
+    }
+}
