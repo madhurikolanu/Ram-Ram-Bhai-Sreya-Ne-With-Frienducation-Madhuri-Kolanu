@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+public class Solution {
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+        // Write your code here.
+        if(m > n) return -1;
+        // high pointer starts from 0
+        int high = 0;
+        // low pointer set as Int min vale
+        int low = Integer.MIN_VALUE;
+        for(int idx = 0; idx < n; idx++){
+            // update high pointer for evry iteration by adding it with array element
+            high += arr.get(idx);
+            // update low pointer by taking max of its value and array element
+            low = Math.max(low, arr.get(idx));
+        }
+        // to store maximum number of pages assigned to a student is minimum.
+        int minPages = 0;
+        // apply binary search
+        while(low <= high){
+            int mid = (low + high) / 2;
+            // check for every mid in array elements are greater than given m value
+            if(check(arr, mid) > m){
+                low = mid + 1;
+            }
+            // update minPages value and update high pointer if it less than m
+            else {
+                minPages = mid;
+                high = mid - 1;
+            }
+        }
+        return minPages;
+    }
+    public static int check(ArrayList<Integer> A, int mid){
+        int noOfStudents = 1;
+        int sum = 0;
+        // for every array element check if sum is less than or equal to mid
+        for(int i = 0; i < A.size(); i++){
+            if(sum + A.get(i) <= mid){
+                sum += A.get(i);
+            }
+            // else override sum value and increase noofstudents
+            else{
+                noOfStudents++;
+                sum = A.get(i);
+            }
+        }
+        return noOfStudents;
+    }
+}
