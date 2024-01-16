@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+
+public class Solution
+{
+    public static int findLargestMinDistance(ArrayList<Integer>
+    boards, int k)
+    {
+        int n = boards.size();
+        int maxValue = Integer.MIN_VALUE;
+        int totalSum = 0;
+        // get max value and total sum of all elements
+        for(int index = 0; index < n; index++){
+            maxValue = Math.max(maxValue, boards.get(index));
+            totalSum += boards.get(index);
+        }
+        // low pointer starts from max number
+        int low = maxValue;
+        // high pointer starts from total sum
+        int high = totalSum;
+        while(low < high){
+            int mid = low + (high - low) / 2;
+            // check if better optimum in upper half here mid is excluded because it gives required Painters > k, which is invalid
+            if(check(boards, n, mid) > k) low = mid + 1;
+            // find better optimum in lower half here mid is included because we may not get anything better
+            else high = mid;
+        }
+        return low;
+    }
+    private static int check(ArrayList<Integer> boards, int n,
+     int mid){
+        int noOfPainters = 1;
+        int sum = 0;
+        for(int idx = 0; idx < n; idx++){
+            sum += boards.get(idx);
+            // if sum is greater than mid then update sum to point to current value and increment noofpainters
+            if(sum > mid){
+                sum = boards.get(idx);
+                noOfPainters++;
+            }
+        }
+        return noOfPainters;
+    }
+}

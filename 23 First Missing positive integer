@@ -1,0 +1,28 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        for (int idx = 0; idx < n; idx++) {
+            // if nums[i] is in between 0 to n
+            if (nums[idx] > 0 && nums[idx]<= n) {
+                // if the element at current element - 1 is not equal to element at current index then swap both the elements and reduce index by 1
+                int pos = nums[idx] - 1;
+                if (nums[pos] != nums[idx]) {
+                    swap(nums, pos, idx);
+                    idx--;
+                    // We are doing i-- as we have swapped i'th element with pos'th element and we might not have processed the pos'th element.
+                }
+            }
+        }
+        // iterate through array to find the first missing number by checking it with index +1
+        for (int index = 0; index < n; index++) {
+            if (nums[index] != index + 1)
+                return (index + 1);
+        }
+        return n + 1;
+    }
+    private void swap(int[] nums, int pos, int i){
+        int temp = nums[pos];
+        nums[pos] = nums[i];
+        nums[i] = temp;
+    }
+}
