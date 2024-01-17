@@ -1,0 +1,42 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        // intialize index variable with -1
+        int index = -1;
+        int n = nums.length;
+        // iterate through array from back and get the first element index which is less than its next element
+        for(int idx = n-2; idx >= 0; idx--){
+            if(nums[idx] < nums[idx+1]){
+                index = idx;
+                break;
+            }
+        }
+        // if index is still points to -1 then reverse the entire array
+        if(index == -1){
+            reverseArray(0, n-1, nums);
+            return;
+        }
+        // iterate through array from back
+        for(int idx = n-1; idx >= 0; idx--){
+            // if element at index is less than element at current index then swap the two elements
+            if(nums[index] < nums[idx]){
+                swap(index, idx, nums);
+                break;
+            }
+        }
+        // now, reverse the array to get the next permutation of the given array
+        reverseArray(index+1, n-1, nums);
+    }
+    public void reverseArray(int i, int j, int[] nums){
+        //iterate through i and j pointers and swap the elements
+        while(i < j){
+            swap(i, j, nums);
+            i++;
+            j--;
+        }
+    }
+    public void swap(int first, int next, int[] nums){
+        int temp = nums[next];
+        nums[next] = nums[first];
+        nums[first] = temp;
+    }
+}

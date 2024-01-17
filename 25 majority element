@@ -1,0 +1,24 @@
+class Solution {
+    public int majorityElement(int[] nums) {
+        int n = nums.length;
+        // intialize count variable as 1
+        int count = 1;
+        // intialize majority element as 0th index
+        int majorityElement = nums[0];
+        for(int index = 0; index < n; index++){
+            // if majority ele is equal to current index then increment count variable by 1
+            if(majorityElement == nums[index]){
+                count++;
+            }
+            // ele decrement count variable and check if it is equal to 0 then update majority ele as current element and increment count by 1
+            else{
+                count--;
+                if(count == 0){
+                    majorityElement = nums[index];
+                    count++;
+                }
+            }
+        }
+        return majorityElement;
+    }
+}
