@@ -1,0 +1,41 @@
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        int trappedWater = 0;
+        //using two pointers
+        // intialize leftMax and rightMax as 0
+        int leftMax = 0; int rightMax = 0;
+        // take two pointers one starts from 0 and other starts from n-1
+        int left = 0; int right = n-1;
+        //iterate through array
+        while(left < right){
+            // if left value is less than r equal to right value
+            if(height[left] <= height[right]){
+                // if left element value is greater leftMax update leftMax
+                if(height[left] > leftMax) leftMax = height[left];
+                // else update trappedwater by subtracting leftMax with current array element
+                else trappedWater += leftMax - height[left];
+                left++;
+            }
+            // if right value is less than r equal to left value
+            else{
+                // if right element value is greater rightMax update rightMax
+                if(height[right] > rightMax) rightMax = height[right];
+                // else update trappedwater by subtracting rightMax with current array element
+                else trappedWater += rightMax - height[right];
+                right--;
+            }
+        }
+        return trappedWater;
+        /* int[] rightMaxArr = new int[n];
+        rightMaxArr[n-1] = height[n-1];
+        for(int idx = n-2; idx >=0; idx--){
+            rightMaxArr[idx] = Math.max(rightMaxArr[idx+1], height[idx]);
+        }
+        int leftMax = height[0];
+        for(int index = 0; index < n; index++){
+            leftMax = Math.max(leftMax, height[index]);
+            trappedWater += Math.min(leftMax, rightMaxArr[index])-height[index];
+        }*/
+    }
+}
