@@ -1,0 +1,26 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        int n = digits.length();
+        List<String> letterCombinations = new ArrayList<>();
+        // if size is 0 then return empty list
+        if(n == 0) return letterCombinations;
+        // initialize string arr to store all the mapping digits for each number
+        String[] phone_map = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        // function to return the list of all possible combinations for the given input
+        getAllCombinations(letterCombinations, phone_map, digits, 0, "");
+        return letterCombinations;
+    }
+    private void getAllCombinations(List<String> letterCombinations, String[] phone_map, String digits, int currIdx, String currStr){
+        // if curreStr length is equal to digits length then add the combination to list
+        if( currStr.length() == digits.length()) {
+            letterCombinations.add(currStr);
+            return;
+        }
+        // get the mapping string from phone map
+        String mapping_str = phone_map[digits.charAt(currIdx) - '2'];
+        // iterate through mapping str to get all the possible combinations
+        for(int index = 0; index < mapping_str.length(); index++){
+            getAllCombinations(letterCombinations, phone_map, digits, currIdx + 1, currStr + mapping_str.charAt(index));
+        }
+    }
+}
