@@ -1,0 +1,32 @@
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        int n = candidates.length;
+        // sort the given array
+        Arrays.sort(candidates);
+        List<List<Integer>> allUniqueCombinations = new ArrayList<List<Integer>>();
+        // function that adds all the unique combination sum to above list
+        getAllUniqueCombinations(candidates, target, 0, allUniqueCombinations, new ArrayList<>(), n);
+        return allUniqueCombinations;
+    }
+    private void getAllUniqueCombinations(int[] candidates, int target, int i, List<List<Integer>> allUniqueCombinations, List<Integer> uniqueCombination, int n){
+        // if target is 0 add the uniquecombination list to allUniqueCombinations
+        if(target == 0){
+            allUniqueCombinations.add(new ArrayList<>(uniqueCombination));
+            return;
+        }
+        if(i == candidates.length) return;
+
+        // iterate through the entire array starting from i as we need to choose index i as an unlimited number of times
+        for(int index = i; index < n; index++){
+             // if target is less than the current element ignore that recursive call
+            if(target < candidates[index]) break;
+            // adds the current element to list - case of picking an element
+            uniqueCombination.add(candidates[index]);
+            // recursive function call with same index by reducing target with current element
+            getAllUniqueCombinations(candidates, target-candidates[index], index, allUniqueCombinations, uniqueCombination, n);
+            // removes the last added element from list - case of not picking an element
+            uniqueCombination.remove(uniqueCombination.size() - 1);
+
+        }
+    }
+}

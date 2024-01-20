@@ -1,0 +1,51 @@
+class Solution {
+    public void solveSudoku(char[][] board) {
+        // initiates the recursive call starting from 0th row 0th col
+        fillSudoku(board, 0, 0);
+    }
+    private boolean fillSudoku(char[][] board, int row, int col){
+        // if row reaches 9 means till here all are valid cases so return true
+        if(row == 9) return true;
+        // if col reaches 9 call the function again by moving to the next row starting from 0th col
+        if(col == 9){
+            return fillSudoku(board, row + 1, 0);
+        }
+        char ch = board[row][col];
+        // if the current row and col character is dot check if any number starting from 1 to 9 is not used either in row or col or 3 * 3 block
+        if(ch == '.'){
+            for(int idx = 1; idx < 10; idx++){
+                char reqChar = (char)(idx+'0');
+                // isSafe returns true if reqChar is not used any current row or current col or current block
+                if(isSafe(board, row, col, reqChar)){
+                    // update the cell with reqChar - pick case
+                    board[row][col] = reqChar;
+                    // now move to next column if it returns true then return true
+                    if(fillSudoku(board, row, col+1)) return true;
+                    // update the cell with dot - not pick case
+                    board[row][col] = '.';
+                }
+            }
+        }
+        else{
+            // if the current cell contains any character from 1 to 9 move to next cell
+            return fillSudoku(board, row, col+1);
+        }
+        return false;
+    }
+    private boolean isSafe(char[][] board, int row, int col, char reqChar){
+        for(int colIdx = 0; colIdx < 9; colIdx++){
+             // check for row
+            if(board[row][colIdx] == reqChar) return false;
+             // check for col
+            if(board[colIdx][col] == reqChar) return false;
+        }
+        // check for 3 * 3 block
+        int newRow = 3 * (row / 3), newCol = 3 * (col / 3);
+        for(int r = newRow; r < newRow + 3; r++){
+            for(int c = newCol; c < newCol + 3; c++){
+                if(board[r][c] == reqChar) return false;
+            }
+        }
+        return true;
+    }
+}
