@@ -1,0 +1,25 @@
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        // allPossibleSubSets to store all unique subsets
+        List<List<Integer>> allPossibleSubSets = new ArrayList<List<Integer>>();
+        int n = nums.length;
+        // function adds all unique subsets to allPossibleSubSets
+        getAllUniquePossibleSubsets(nums, n, 0, new ArrayList<Integer>(), allPossibleSubSets);
+        return allPossibleSubSets;
+    }
+    private void getAllUniquePossibleSubsets(int[] nums, int n, int i, List<Integer> subSetList, List<List<Integer>> allPossibleSubSets){
+        // add every subSetList to allPossibleSubSets
+        allPossibleSubSets.add(new ArrayList<>(subSetList));
+        // if i equals to n return
+        if(i == n) return;
+        // for every index i iterate from i to n to get all possible subsets
+        for(int index = i; index < n; index++){
+            // add current element to subSetList - pick case
+            subSetList.add(nums[index]);
+            // recursive call for index + 1 element
+            getAllUniquePossibleSubsets(nums, n, index + 1, subSetList, allPossibleSubSets);
+            // remove current element from subSetList - not pick case
+            subSetList.remove(subSetList.size() - 1);
+        }
+    }
+}

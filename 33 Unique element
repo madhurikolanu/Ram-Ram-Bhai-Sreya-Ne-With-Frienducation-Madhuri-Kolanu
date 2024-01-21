@@ -1,0 +1,12 @@
+class Solution {
+    public int singleNumber(int[] nums) {
+        // to find the unique element intialize with 0th element
+        int uniqueElement = nums[0];
+        int n = nums.length;
+        // iterate through array and update uniqueElement by applying xor with current element
+        for(int index = 1; index < n; index++){
+            uniqueElement ^= nums[index];
+        }
+        return uniqueElement;
+    }
+}
