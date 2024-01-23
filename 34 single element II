@@ -1,0 +1,16 @@
+class Solution {
+    public int singleNumber(int[] nums) {
+        int n = nums.length;
+        // to store number that occur only once
+        int ones = 0;
+        // to store number that occur twice
+        int twos = 0;
+        for(int i = 0; i < n; i++){
+            // update ones value by xor with current element and bitwise and with complement of twos
+            ones = ones ^ nums[i] & (~twos);
+            // update twos value by xor with current element and bitwise and with complement of ones
+            twos = twos ^ nums[i] & (~ones);
+        }
+        return ones;
+    }
+}
