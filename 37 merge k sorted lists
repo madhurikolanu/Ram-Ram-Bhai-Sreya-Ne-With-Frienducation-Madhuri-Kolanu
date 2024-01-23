@@ -1,0 +1,92 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        // if list is null and length is 0 return null
+        if(lists == null || lists.length == 0) return null;
+        // function returns the final list after merging
+        return mergeKListsHelper(lists, 0, lists.length-1);
+    }
+    private ListNode mergeKListsHelper(ListNode[] lists, int start, int end){
+        // if start is equal to end return lists of any start or end
+        if(start == end) return lists[end];
+        //if start + 1 is equal to end merge both strat and end lists
+        if(start + 1 == end) return merge(lists[start], lists[end]);
+
+        // get the mid index to divide lists into two halves
+        int mid = start + (end - start) / 2;
+        // get the first mid index lists after merging
+        ListNode firstList = mergeKListsHelper(lists, start, mid);
+        // get the second index lists starting from mid + 1 to end after merging
+        ListNode secondList = mergeKListsHelper(lists, mid + 1, end);
+
+        //return final list after merging the both lists
+        return merge(firstList, secondList);
+    }
+    private ListNode merge(ListNode firstList, ListNode secondList){
+        // create dummy listnode
+        ListNode finalList = new ListNode(0);
+        ListNode tempList = finalList;
+        // traverse through both the lists and consider the less value and append it to tempList
+        while(firstList != null && secondList != null){
+            if(firstList.val < secondList.val){
+                tempList.next = firstList;
+                firstList = firstList.next;
+            }
+            else{
+                tempList.next = secondList;
+                secondList = secondList.next;
+            }
+            tempList = tempList.next;
+        }
+        // leftover list append to tempList
+        tempList.next = (firstList == null) ? secondList : firstList;
+        return finalList.next;
+    }
+   /* public ListNode mergeKLists(ListNode[] lists) {
+        int n = lists.length;
+        ListNode finalList = new ListNode(0);
+        if(n == 0) return finalList.next;
+        ListNode firstList = lists[0];
+        for(int i = 1; i < n; i++){
+            ListNode ithListNode = lists[i];
+            firstList = mergeLists(firstList, ithListNode);
+        }
+        return firstList;
+    }
+    private ListNode mergeLists(ListNode firstList, ListNode secondList){
+        ListNode finalList = new ListNode(0);
+        ListNode tempList = finalList;
+        while(firstList != null && secondList != null){
+            if(firstList.val < secondList.val){
+                tempList.next = firstList;
+                tempList = tempList.next;
+                firstList = firstList.next;
+            }
+            else{
+                tempList.next = secondList;
+                tempList = tempList.next;
+                secondList = secondList.next;
+            }
+        }
+        while(firstList != null){
+            tempList.next = firstList;
+            tempList = tempList.next;
+            firstList = firstList.next;
+        }
+        while(secondList != null){
+            tempList.next = secondList;
+            tempList = tempList.next;
+            secondList = secondList.next;
+        }
+        return finalList.next;
+    }*/
+}

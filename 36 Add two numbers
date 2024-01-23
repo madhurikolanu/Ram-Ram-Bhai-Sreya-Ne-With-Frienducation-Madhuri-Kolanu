@@ -1,0 +1,49 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // create a resultant listnode with dummy value as 0
+        ListNode sumList = new ListNode(0);
+        // assign the sumList to temp node
+        ListNode tempSumList = sumList;
+        // carry to pass over to next sum
+        int carry = 0;
+        // iterate through both the list nodes to sum each digits and also carry
+        while(l1 != null || l2 != null){
+            // get digit1 if l1 not null
+            int digit1 = (l1 != null) ? l1.val : 0;
+            // get digit2 if l2 not null
+            int digit2 = (l2 != null) ? l2.val : 0;
+
+            // sum up digit1 digit2 and carry
+            int sum = digit1 + digit2 + carry;
+            // to get the sum after adding
+            int rem = sum % 10;
+            // update carry
+            carry = sum / 10;
+
+            // create a new list node with rem
+            ListNode tempSum = new ListNode(rem);
+            tempSumList.next = tempSum;
+            // update tempSumList after pointing to next node
+            tempSumList = tempSumList.next;
+
+            // update l1 if not null
+            l1 = (l1 != null) ? l1.next : null;
+            //update l2 if not null
+            l2 = (l2 != null) ? l2.next : null;
+        }
+        // add leftover carry
+        if(carry != 0) tempSumList.next = new ListNode(carry);
+        // return sumList.next as sumList points to dummy node 0
+        return sumList.next; 
+    }
+}
