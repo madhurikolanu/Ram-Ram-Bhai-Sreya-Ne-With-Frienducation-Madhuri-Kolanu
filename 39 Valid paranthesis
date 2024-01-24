@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isValid(String s) {
+        // index pointer to check the stack size
+        int index = -1;
+        int n = s.length();
+        char[] charArr = s.toCharArray();
+        // stackArr to push characters
+        char[] stackArr = new char[n];
+        // iterate through each character of given string
+        // if there is any open character then push to stackarr
+        // else check whether there is already an open character available in stackarr
+        // if yes consider it as balanced character and check for next index
+        for(char ch : charArr){
+            if(ch == '{' || ch == '(' || ch == '['){
+                stackArr[ ++index ] = ch;
+            }
+            else {
+                if(index >= 0 && ((stackArr[index] == '{' && ch == '}') ||
+                                  (stackArr[index] == '[' && ch == ']') ||
+                                  (stackArr[index] == '(' && ch == ')')))
+                    index--;
+                else return false;
+            }
+        }
+        return index == -1;
+    }
+}
