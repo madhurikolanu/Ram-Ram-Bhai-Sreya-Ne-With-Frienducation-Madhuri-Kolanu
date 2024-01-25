@@ -1,0 +1,60 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        Stack<Integer> stack = new Stack<Integer>();
+        int maxRectangleArea = 0;
+        for(int index = 0; index <= n; index++){
+            // traverse through stack so that it stores the elements in increasing order
+            while(!stack.empty() && ( index == n || heights[stack.peek()] > heights[index])){
+                // consider the peek element as height and then pop it
+                int height = heights[stack.peek()];
+                stack.pop();
+                // current index would be the right smaller
+                int width = index;
+                // peek element would be left smaller
+                if(!stack.empty()) width = index - stack.peek() - 1;
+                maxRectangleArea = Math.max(maxRectangleArea, height * width);
+            }
+            stack.push(index);
+        }
+        return maxRectangleArea;
+
+        /*int n = heights.length;
+        int[] leftSmaller = getNextSmallerLeft(heights, n);
+        int[] rightSmaller = getNextSmallerRight(heights, n);
+        int maxRectangleArea = 0;
+        for(int i = 0; i < n; i++){
+            int width = rightSmaller[i] - leftSmaller[i] + 1;
+            int area = width * heights[i];
+            maxRectangleArea = Math.max(maxRectangleArea, area);
+        }
+        return maxRectangleArea;*/
+    }
+    private int[] getNextSmallerLeft(int[] heights, int n){
+        int[] leftSmaller = new int[n];
+        Stack<Integer> nextSmallerStack = new Stack<>();
+        for(int i = 0; i < n; i++){
+            while(!nextSmallerStack.empty() && heights[nextSmallerStack.peek()] >= heights[i]){
+                nextSmallerStack.pop();
+            }
+            if(nextSmallerStack.empty()) leftSmaller[i] = 0;
+            else leftSmaller[i] = nextSmallerStack.peek() + 1;
+            nextSmallerStack.push(i);
+        }
+        return leftSmaller;
+    }
+
+    private int[] getNextSmallerRight(int[] heights, int n){
+        int[] rightSmaller = new int[n];
+        Stack<Integer> prevSmallerStack = new Stack<>();
+        for(int i = n-1; i >= 0; i--){
+            while(!prevSmallerStack.empty() && heights[prevSmallerStack.peek()] >= heights[i]){
+                prevSmallerStack.pop();
+            }
+            if(prevSmallerStack.empty()) rightSmaller[i] = n - 1;
+            else rightSmaller[i] = prevSmallerStack.peek() - 1;
+            prevSmallerStack.push(i);
+        }
+        return rightSmaller;
+    }
+}
