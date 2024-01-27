@@ -1,0 +1,21 @@
+public class Solution {
+    public int[] prevSmaller(int[] A) {
+        // stack to find the nearest smaller element
+        Stack<Integer> stack = new Stack<>();
+        int n = A.length;
+        int[] nearestSmallEleArr = new int[n];
+        // traverse through array cnd check for each index if stack is empty then there is
+        // no nearest smaller elemnt for that else check if the top element is less than the
+        // current if not remove that element from stack
+        // then push every element to stack because that may be the nearest smaller for next element
+        for(int i = 0; i < n; i++){
+            while(!stack.empty() && stack.peek() >= A[i]){
+                stack.pop();
+            }
+            if(!stack.empty()) nearestSmallEleArr[i] = stack.peek();
+            else nearestSmallEleArr[i] = -1;
+            stack.push(A[i]);
+        }
+        return nearestSmallEleArr;
+    }
+}

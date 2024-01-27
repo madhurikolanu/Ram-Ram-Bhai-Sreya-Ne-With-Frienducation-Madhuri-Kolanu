@@ -1,0 +1,35 @@
+class Pair{
+    int index;
+    int element;
+    Pair(int idx, int value){
+        index = idx;
+        element = value;
+    }
+}
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] maxEleArr = new int[n - k + 1];
+        if(n == 1) return nums;
+        // take priorityQueue with Pair and keep them in decresing order according to value
+        PriorityQueue<Pair> priorityQueue = new PriorityQueue<>((a, b) -> b.element - a.element);
+        // traverse through first k elements and add them ti pq
+        for(int index = 0; index < k; index++){
+            priorityQueue.add(new Pair(index, nums[index]));
+        }
+        int j = 0;
+        // get the max from pq and add it to arr
+        maxEleArr[j++] = priorityQueue.peek().element;
+        // traverse through the array from k to n elements
+        // for every element if max one index is less than equal to idx-k then remove it from queue
+        // then get the max and add it to array and add every element to pq
+        for(int idx = k; idx < n; idx++){
+            priorityQueue.add(new Pair(idx, nums[idx]));
+            while(priorityQueue.peek().index <= idx - k){
+                priorityQueue.poll();
+            }
+            maxEleArr[j++] = priorityQueue.peek().element;
+        }
+        return maxEleArr;
+    }
+}
