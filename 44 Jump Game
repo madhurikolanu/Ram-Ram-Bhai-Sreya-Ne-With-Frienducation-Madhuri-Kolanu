@@ -1,0 +1,14 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        int n = nums.length;
+        int lastGoodIndexElement = n - 1;
+        // traverse from back and check for every index if lastGoodIndexElement is less than or equal to current index plus their element then update lastGoodIndexElement
+        // just to keep track of distance from the current index to reach to last one or not
+        for(int index = n - 1; index >= 0; index--){
+            if( index + nums[index] >= lastGoodIndexElement){
+                lastGoodIndexElement = index;
+            }
+        }
+        return (lastGoodIndexElement == 0);
+    }
+}

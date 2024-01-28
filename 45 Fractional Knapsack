@@ -1,0 +1,82 @@
+//{ Driver Code Starts
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+class Item {
+    int value, weight;
+    Item(int x, int y){
+        this.value = x;
+        this.weight = y;
+    }
+}
+
+class GfG {
+
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int t = Integer.parseInt(br.readLine().trim());
+		while(t-->0){
+            String inputLine[] = br.readLine().trim().split(" ");
+            int n = Integer.parseInt(inputLine[0]);
+            int w = Integer.parseInt(inputLine[1]);
+            Item[] arr = new Item[n];
+            inputLine = br.readLine().trim().split(" ");
+            for(int i=0, k=0; i<n; i++){
+                arr[i] = new Item(Integer.parseInt(inputLine[k++]), Integer.parseInt(inputLine[k++]));
+            }
+            System.out.println(String.format("%.6f", new Solution().fractionalKnapsack(w, arr, n)));
+        }
+    }
+}
+// } Driver Code Ends
+
+
+/*
+class Item {
+    int value, weight;
+    Item(int x, int y){
+        this.value = x;
+        this.weight = y;
+    }
+}
+*/
+
+class Solution
+{
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        // Your code here
+        // Sort the Item according to value/weight
+        Arrays.sort(arr, new Comparator<Item>(){
+           @Override
+           public int compare(Item i1, Item i2){
+               double profit = new Double( (double)((i1.value) / (double)(i1.weight)));
+               double profit1 = new Double((double)((i2.value) / (double) (i2.weight)));
+               if(profit < profit1) return 1;
+               else return -1;
+           }
+        });
+        double maxValue = 0.0;
+        // traverse through the array if current weight is less than the capacity (W) given then simply
+        // update the current capacity and add the current value to maxValue
+        // else find the fractional value and update maxValue and W
+        for(int index = 0; index < n; index++){
+            Item item = arr[index];
+            int weight = item.weight;
+            int value = item.value;
+            if(weight <= W){
+                maxValue +=  (double) value;
+                W -= weight;
+            }
+            else{
+                double fractinalValue = ((double)W / (double)weight);
+                W = (int) (W - (weight * fractinalValue));
+                maxValue += (value * fractinalValue);
+                //break;
+            }
+        }
+        return maxValue;
+    }
+}
