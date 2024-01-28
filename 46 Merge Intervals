@@ -1,0 +1,34 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        // if there is only one interval simply return it
+        if(n == 1) return intervals;
+        // sort the given array according to start pointer
+        Arrays.sort(intervals, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] a1, int[] a2){
+                return a1[0] - a2[0];
+            }
+        });
+        int index = 0;
+        // traverse through array and check if any interval overlaps with previous and current
+        // if yes then merge it
+        // else simple add that interval at index
+        for(int i = 1; i < n; i++){
+            if(intervals[index][1] >= intervals[i][0]){
+                intervals[index][1] = Math.max(intervals[index][1], intervals[i][1]);
+            }
+            else{
+                index++;
+                intervals[index] = intervals[i];
+            }
+        }
+        // copy the intervals data to new array
+        int[][] mergedIntervals = new int[index+1][2];
+        for (int i = 0; i <= index; i++) {
+            mergedIntervals[i][0] = intervals[i][0];
+            mergedIntervals[i][1] = intervals[i][1];
+        }
+        return mergedIntervals;
+    }
+}
