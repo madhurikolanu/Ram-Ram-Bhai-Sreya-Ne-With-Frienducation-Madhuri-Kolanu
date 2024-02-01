@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        // method to find the maximum height of binary tree
+       return getMaxDepth(root);
+    }
+    private int getMaxDepth(TreeNode root){
+        // if root is null return 0
+        if(root == null) return 0;
+        // calculate maximum by recursively calling getMaxDepth with left and right nodes
+        // adding 1 by considering the current node is not null
+        return 1 + Math.max(getMaxDepth(root.left), getMaxDepth(root.right));
+    }
+}
