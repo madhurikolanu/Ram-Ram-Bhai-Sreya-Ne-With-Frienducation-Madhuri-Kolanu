@@ -1,0 +1,51 @@
+import java.util.* ;
+import java.io.*;
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    class TreeNode<T>
+    {
+       public:
+        T data;
+        TreeNode<T> left;
+        TreeNode<T> right;
+
+        TreeNode(T data)
+        {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    };
+
+************************************************************/
+
+public class Solution {
+
+    public  static int findCeil(TreeNode<Integer> node, int x) {
+
+        // Write your code here
+        // variable to return ceilValue intially it would be -1
+        int ceilValue = -1;
+        // traverse through treenode until node is null
+        while(node != null){
+            // if current node value is equal to given x then simply update ceilValue and return
+            if(node.data == x){
+                ceilValue = x;
+                return ceilValue;
+            }
+            // if it is greater than x update ceilValue as it can be the ceil of given x and
+            // it is BST so updating root node to right is helpless so we update to left pointer
+            else if(node.data > x){
+                ceilValue = node.data;
+                node = node.left;
+            }
+            // if it is less than update node to its right pointer
+            else{
+                node = node.right;
+            }
+        }
+        return ceilValue;
+    }
+}

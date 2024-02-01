@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        // using morris inoder traversal
+        // intialize count variable to get the kth smallest element
+        int count = 0;
+        // assign the root node to temp node
+        TreeNode curr = root;
+        // traverse through the root node until it is null
+        while(curr != null){
+            // if current node's left is null consider this node and
+            // increment the count if the count value is equal to k return curr val
+            if(curr.left == null){
+                count++;
+                if(count == k) return curr.val;
+                curr = curr.right;
+            }
+            // else if node has left store it in temp node and iterate through its right node
+            // until its right is null to create a link with right and curr
+            else{
+                TreeNode temp = curr.left;
+                while(temp.right != null && temp.right != curr){
+                    temp = temp.right;
+                }
+                // creating the link for the first time by updating the curr to its left node
+                if(temp.right == null){
+                    temp.right = curr;
+                    curr = curr.left;
+                }
+                // once the link is created  break this link and increment the count variable
+                // check if count is equal to k then return current node val
+                // also update curr to its right node
+                else{
+                    temp.right = null;
+                    count++;
+                    if(count == k) return curr.val;
+                    curr = curr.right;
+                }
+            }
+        }
+        return 0;
+    }
+}
