@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        // take two values min and max value to check whether the node value is between the range or not
+        return validBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    private boolean validBST(TreeNode root, Long start, Long end){
+        // if root is null simply return true because till here node values are in range
+        if(root == null) return true;
+        // if start is less than or equal to root value and root value is less than or equal to end then it follows BST rule leftnode < root < rightnode
+        if(start <= root.val && root.val <= end){
+            // call for left node to check whether left node is in range of start and rootval-1
+            boolean left = validBST(root.left, start, (long)root.val-1);
+            // call for right node to check whether right node is in range of rootval+1 and end
+            boolean right = validBST(root.right, (long)root.val+1, end);
+            // do and for left, right because left and right both should satisfy the condition
+            return left & right;
+        }
+        return false;
+    }
+}

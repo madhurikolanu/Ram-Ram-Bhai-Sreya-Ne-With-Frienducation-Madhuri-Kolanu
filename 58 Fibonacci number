@@ -1,0 +1,20 @@
+class Solution {
+    public int fib(int n) {
+        // initialize array to store already calculated values
+        int[] fib = new int[n + 1];
+        // call to findFIb method to return fib of given n value
+        return findFib(n, fib);
+    }
+    private int findFib(int n, int[] fib){
+        // if n is less than or equal to 1 return n
+        if(n <= 1) return n;
+        // check if fib[n] is already calcualted then return it
+        if(fib[n] != 0) return fib[n];
+        // else find its fibonacci value and store it in respective fib[]
+        else {
+            fib[n] = findFib(n - 1, fib) + findFib(n - 2, fib);
+        }
+        // return fib[n] at the end
+        return fib[n];
+    }
+}
