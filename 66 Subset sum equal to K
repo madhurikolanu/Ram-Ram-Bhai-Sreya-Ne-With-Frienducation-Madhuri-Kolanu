@@ -1,0 +1,33 @@
+import java.util.* ;
+import java.io.*;
+public class Solution {
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        //declare a 2D array to store already calculated values
+        int[][] dp = new int[n][k + 1];
+        // intialize with -1
+        for(int[] a : dp)
+            Arrays.fill(a, -1);
+        // helper method to check whether there exists a subset sum equal to k
+        return helper(arr, n, k, 0, dp);
+    }
+    private static boolean helper(int[] arr, int n, int k, int i, int[][] dp){
+        // if given sum equals to 0 then there exists a subset with k
+        if(k == 0) return true;
+        // if index i equals to n or given sum goes beyond 0 then there is no subset with k
+        if(i == n || k < 0) return false;
+        // intialize pick and not pick to false
+        boolean pick = false, notpick = false;
+        // if current cell equals to -1 then it is not calculated
+        if(dp[i][k] == -1){
+            // pick the current ekement by deducting it from given sum and proceed to next element
+             pick = helper(arr, n, k-arr[i], i + 1, dp);
+             // dont consider the current element and proceed to next element
+             notpick = helper(arr, n, k, i + 1, dp);
+             // calculate whether it is false or true then assign to current cell
+            dp[i][k] = (pick | notpick) == false ? 0 : 1;
+        }
+        // return binary or between pick and notpick
+        return pick | notpick;
+    }
+}
