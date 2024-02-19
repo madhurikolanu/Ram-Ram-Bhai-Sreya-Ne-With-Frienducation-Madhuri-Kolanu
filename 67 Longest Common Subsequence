@@ -1,0 +1,35 @@
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        // length of text1 string
+        int n = text1.length();
+        // length of text2 string
+        int m = text2.length();
+        // declare a 2D array and intialize with -1
+        int[][] dp = new int[n][m];
+        for(int[] a : dp)
+            Arrays.fill(a, - 1);
+        // helper() to get longest common subsequence starting from 0
+        return helper(text1, text2, n, m, 0, 0, dp);
+    }
+    private int helper(String text1, String text2, int n, int m, int i, int j, int[][] dp){
+        // if i or j reaches their length then there is no common subsequence so return 0
+        if(i == n || j == m) return 0;
+        // if current cell is equal to -1 then value is not calcualted
+        if(dp[i][j] == -1){
+            // declare a maxlen variable to store the max length till index i and j
+            int maxLength = 0;
+            // if current indexes i and j characters are equal then consider the length as 1 and continue with next elements
+            if(text1.charAt(i) == text2.charAt(j)){
+                maxLength = 1 + helper(text1, text2, n, m, i + 1, j + 1, dp);
+            }
+            // if not equal then there will be two ways one is moving index i and the other is moving index j to the immediate next index
+            // get the max from these two and update maxLength variable
+            else{
+                maxLength = Math.max(helper(text1, text2, n, m, i, j + 1, dp), helper(text1, text2, n, m, i + 1, j, dp));
+            }
+            // update the current cell value with maxleng
+            dp[i][j] = maxLength;
+        }
+        return dp[i][j];
+    }
+}
