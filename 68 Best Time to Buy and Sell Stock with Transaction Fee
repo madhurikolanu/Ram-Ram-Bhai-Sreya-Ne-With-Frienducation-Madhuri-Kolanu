@@ -1,0 +1,34 @@
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        // size of prices array
+        int size = prices.length;
+        // declare a 2D array and intialize it to -1
+        int[][] dp = new int[size][2];
+        for(int[] a : dp)
+            Arrays.fill(a, -1);
+        // function call to get the max profit
+        return getMaxProfit(prices, size, fee, 0, 1, dp);
+    }
+    private int getMaxProfit(int[] prices, int size, int fee, int index, int buy, int[][] dp){
+        // if index reaches size then there is no profit incurred till now so return 0
+        if(index == size) return 0;
+        // if current cell is equal to -1 then calculate value for it
+        if(dp[index][buy] == -1){
+            // declare a variable profit to get the maxprofit
+            int profit = 0;
+            // if we consider to buy we get two options pick the current index or not
+            if(buy == 1){
+                // calculate max profit by picking the current index to buy  and by deducting fee from it and by not picking it
+                profit = Math.max((-prices[index] - fee) + getMaxProfit(prices, size, fee, index + 1, 0, dp), 0 + getMaxProfit(prices, size, fee, index + 1, 1, dp));
+            }
+            // if we consider to sell again two options pick the current one or not
+            else{
+                // calculate max profit by considering the current index and not
+                profit = Math.max(prices[index] + getMaxProfit(prices, size, fee, index + 1, 1, dp), 0 + getMaxProfit(prices, size, fee, index + 1, 0, dp));
+            }
+            // update the current cell with the updated profit value
+            dp[index][buy] = profit;
+        }
+        return dp[index][buy];
+    }
+}
