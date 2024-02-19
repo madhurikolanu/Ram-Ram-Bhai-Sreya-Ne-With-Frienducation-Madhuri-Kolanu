@@ -1,0 +1,53 @@
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        // size of string s1
+        int s1size = s1.length();
+        // size of string s2
+        int s2size = s2.length();
+        // size of string s3
+        int s3size = s3.length();
+        // if string 3 size is not equal to sum of size of other two strings its not a valid interleaved string
+        if (s3size != s1size + s2size)
+            return false;
+        // declare a 2D array and intialize with -1
+        int[][] dp = new int[101][101];
+        for (int[] a : dp)
+            Arrays.fill(a, -1);
+        // function call to check whether s3 is interleaved of s1 and s2
+        // if this function returns 0 it is not interleaved else yes
+        return (helper(s1, s2, s3, 0, 0, s1size, s2size, dp)== 0) ? false : true;
+    }
+    private int helper(String s1, String s2, String s3,
+            int i, int j, int s1size, int s2size, int[][] dp) {
+        // check if current cell in dp array is not -1 means it is already calculated
+        // then return its value
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        // if i and j value reaches their string size then its a valid string
+        if (i == s1size && j == s2size)
+            return 1;
+        // check s3 with both the strings s1 and s2
+        // if matches proceed with the next element
+        // and update the current cell value with the best value from s1 and s2
+        if (i < s1size && s1.charAt(i) == s3.charAt(i + j) && j < s2size &&
+                s2.charAt(j) == s3.charAt(i + j)) {
+            int x = helper(s1, s2, s3, i + 1, j, s1size, s2size, dp);
+            int y = helper(s1, s2, s3, i, j + 1, s1size, s2size, dp);
+            return dp[i][j] = x | y;
+        }
+        // check s3 with string s1 if matches proceed with next element
+        // and update current cell
+        if (i < s1size && s1.charAt(i) == s3.charAt(i + j)) {
+            int x = helper(s1, s2, s3, i + 1, j, s1size, s2size, dp);
+            return dp[i][j] = x;
+        }
+        // check s3 with string s2 if matches proceed with next element
+        // and update current cell
+        if (j < s2size && s2.charAt(j) == s3.charAt(i + j)) {
+            int y = helper(s1, s2, s3, i, j + 1, s1size, s2size, dp);
+            return dp[i][j] = y;
+        }
+        // if none of the above condition satisfies simple update to 0
+        return dp[i][j] = 0;
+    }
+}
