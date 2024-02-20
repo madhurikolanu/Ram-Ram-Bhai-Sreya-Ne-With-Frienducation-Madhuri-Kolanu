@@ -1,0 +1,33 @@
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        // size of the given array
+        int size = nums.length;
+        // declare max array to store the length of increasing subsequence till ith index
+        int[] max = new int[size];
+        //initiate with 1
+        max[0] = 1;
+        // iterate through the given array
+        for(int index = 0; index < size; index++){
+            // stire the current increasing order length value
+            int currval = 0;
+            // itreate through the array till the current index
+            for(int idx = 0; idx < index; idx++){
+                // compare the values with current idx and index
+                // if current is less than then
+                // calculate max value with max array
+                // and store the max value in currval
+                if(nums[idx] < nums[index]){
+                    currval = Math.max(currval, max[idx]);
+                }
+            }
+            // update the ucrrent index in max array by adding 1 to currval
+            max[index] = currval + 1;
+        }
+        // initiate maxLIS to 0 to keep track of max length by iterating over max array
+        int maxLIS = 0;
+        for(int i = 0; i < n; i++){
+            maxLIS = Math.max(maxLIS, max[i]);
+        }
+        return maxLIS;
+    }
+}
