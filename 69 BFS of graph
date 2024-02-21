@@ -1,0 +1,81 @@
+//{ Driver Code Starts
+// Initial Template for Java
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br =
+            new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while (T-- > 0) {
+            String[] s = br.readLine().trim().split(" ");
+            int V = Integer.parseInt(s[0]);
+            int E = Integer.parseInt(s[1]);
+            ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+            for (int i = 0; i < V; i++) adj.add(i, new ArrayList<Integer>());
+            for (int i = 0; i < E; i++) {
+                String[] S = br.readLine().trim().split(" ");
+                int u = Integer.parseInt(S[0]);
+                int v = Integer.parseInt(S[1]);
+                adj.get(u).add(v);
+                // adj.get(v).add(u);
+            }
+            Solution obj = new Solution();
+            ArrayList<Integer> ans = obj.bfsOfGraph(V, adj);
+            for (int i = 0; i < ans.size(); i++)
+                System.out.print(ans.get(i) + " ");
+            System.out.println();
+        }
+    }
+}
+
+// } Driver Code Ends
+
+
+class Solution {
+    // Function to return Breadth First Traversal of given graph.
+    public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        // declare a queue to keep track of the nodes present in given adjency list
+        Queue<Integer> queue = new LinkedList<>();
+
+        // declare a boolean array to mark the node which is already visited
+        Boolean[] visitedarr = new Boolean[V];
+        // initialize all values as false for first time
+        for(int index = 0; index < V; index++){
+            visitedarr[index] = false;
+        }
+
+        // add source node as 0 into the queue
+        queue.add(0);
+        // mark the node 0 as visited
+        visitedarr[0] = true;
+
+        // declare an array to store all the nodes found in the given arr adj
+        ArrayList<Integer> graph = new ArrayList<>();
+
+        // iteratr through the queue until it is empty
+        while(queue.size() > 0){
+            // get the front node from queue and delete it
+            int source = queue.poll();
+            // add the node value into the output list
+            graph.add(source);
+
+            // iterate through the list of this node
+            for(int idx = 0; idx < adj.get(source).size(); idx++){
+                // get the node value from this list
+                int node = adj.get(source).get(idx);
+                // check if it is already visited
+                // if not then add to queue
+                // and mark it as visited
+                if(visitedarr[node] == false){
+                    queue.add(node);
+                    visitedarr[node] = true;
+                }
+            }
+        }
+        // return the final output list which contains all nodes
+        return graph;
+    }
+}
