@@ -1,0 +1,58 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Solution {
+    public static int findNumOfProvinces(int[][] roads, int n) {
+        // Write your code here.
+
+        // create an adj list
+        ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
+
+        // iterate through the given 2D array and add the adjacency nodes for the respective node
+        for(int i = 0; i < n; i++){
+            adjList.add(new ArrayList<>());
+            for(int j = 0; j < n; j++){
+                if(roads[i][j] == 1 && i != j)
+                    adjList.get(i).add(j);
+            }
+        }
+
+        // declare a queue to keep track of connected nodes
+        Queue<Integer> queue = new LinkedList<>();
+        //declare an int array to mark the node whether visited or not
+        int[] visited = new int[n];
+
+        // count variable to identify number of provinces
+        int count = 0;
+        // iterate through the number of cities
+        for(int index = 0; index < n; index++){
+            // if not visited add it to queue and makr it as visited
+            // and also apply bfs to get all the connected nodes of this node
+            // then increment count variable
+            if(visited[index] == 0){
+                queue.add(index);
+                visited[index] = 1;
+                bfs(adjList, visited, queue);
+                count++;
+            }
+        }
+        // return number of provinces identified in count variable
+        return count;
+    }
+    private static void bfs(ArrayList<ArrayList<Integer>> adjList, int[] visited, Queue<Integer> queue){
+        // iterate throught queue until it is empty
+        while(queue.size() > 0){
+            // poll the first node in queue
+            int node = queue.poll();
+            // then itrate through the nodes ocnnected to it
+            for(int connectedNode : adjList.get(node)){
+                // if not visited add to queue and mark it as visited
+                if(visited[connectedNode] == 0){
+                    queue.add(connectedNode);
+                    visited[connectedNode] = 1;
+                }
+            }
+        }
+    }
+}
