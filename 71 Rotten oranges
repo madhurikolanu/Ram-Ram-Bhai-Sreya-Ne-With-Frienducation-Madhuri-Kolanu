@@ -1,0 +1,92 @@
+class Pair{
+    int first;
+    int second;
+    Pair(int row, int col){
+        first = row;
+        second = col;
+    }
+}
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        // get the size of given array
+        int n = grid.length;
+        // get the size of 0th index of given array
+        int m = grid[0].length;
+
+        // declare a queue to keep track of rotten oranges i.e., cell value equals to 2
+        Queue<Pair> queue = new LinkedList<Pair>();
+        // declare a variable time to update the time required to make all oranges to rotten
+        int time = 0;
+        // itreate through the given grid if any cell value equal to 2 means rotten add them to queue
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == 2)
+                    queue.add(new Pair(i, j));
+            }
+        }
+        // iterate through the queue until it is empty
+        while(queue.size() > 0){
+            // declare a boolean variable to update time value
+            // intialize it to default
+            boolean checkForAdjency = false;
+            // get the size of queue
+            int size = queue.size();
+            // now iterate through queue for each source
+            // by decrementing it to 1 until it is empty
+            while(size-- > 0){
+                // get the front pair first as row and second as col
+                Pair pair = queue.poll();
+                int row = pair.first;
+                int col = pair.second;
+                // check if the adjacency top cell is fresh orange or not
+                // if it is fresh then it becomes rotten now
+                // so update cell value to 2 and add it to queue as it is rotten now
+                // also update bolean variable to true
+                if(row - 1 >= 0 && grid[row - 1][col] == 1){
+                    grid[row - 1][col] = 2;
+                    queue.add(new Pair(row - 1, col));
+                    checkForAdjency = true;
+                }
+                // check if the adjacency left cell is fresh orange or not
+                // if it is fresh then it becomes rotten now
+                // so update cell value to 2 and add it to queue as it is rotten now
+                // also update bolean variable to true
+                if(col - 1 >= 0 && grid[row][col - 1] == 1){
+                    grid[row][col - 1] = 2;
+                    queue.add(new Pair(row, col - 1));
+                    checkForAdjency = true;
+                }
+                // check if the adjacency down cell is fresh orange or not
+                // if it is fresh then it becomes rotten now
+                // so update cell value to 2 and add it to queue as it is rotten now
+                // also update bolean variable to true
+                if(row + 1 < n && grid[row + 1][col] == 1){
+                    grid[row + 1][col] = 2;
+                    queue.add(new Pair(row + 1, col));
+                    checkForAdjency = true;
+                }
+                // check if the adjacency right cell is fresh orange or not
+                // if it is fresh then it becomes rotten now
+                // so update cell value to 2 and add it to queue as it is rotten now
+                // also update bolean variable to true
+                if(col + 1 < m && grid[row][col + 1] == 1){
+                    grid[row][col + 1] = 2;
+                    queue.add(new Pair(row, col + 1));
+                    checkForAdjency = true;
+                }
+            }
+            // if boolean variable is set to true then increment time value by 1
+            if(checkForAdjency) time++;
+        }
+        // iterate through the grid again to check if there is any fresh orange or not
+        // if yes simply return as -1 as it is not possible to make rotten
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == 1)
+                    return -1;
+            }
+        }
+        // else return time required to make all rotten
+        return time;
+    }
+}
