@@ -1,0 +1,59 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+public class Solution {
+
+    public static List<Integer> topologicalSort(int[][] edges, int e, int v) {
+        // Write your code here!
+        // declare adjlist
+        List<List<Integer>> adjList = new ArrayList<>();
+
+        // indegree array to keep track of incoming edges of each node
+        int[] indegree = new int[v + 1];
+
+        // create an empty list for each node
+        for(int index = 0; index <= v; index++){
+            adjList.add(new ArrayList<>());
+        }
+
+        // iterate through the edges and update adjlist
+        // also update indegree value for that index
+        for(int index = 0; index < e; index++){
+            int a = edges[index][0];
+            int b = edges[index][1];
+            adjList.get(a).add(b);
+            indegree[b]++;
+        }
+
+        // declare a queue
+        Queue<Integer> queue = new LinkedList<>();
+        // add into the queue nodes which have indegree value as 0
+        for(int i = 0; i < v; i++){
+            if(indegree[i] == 0)
+                queue.add(i);
+        }
+        // create an array to store the topological sorted nodes
+        List<Integer> topologicalOrder = new ArrayList<>();
+
+        // iterate through queue until it is empty
+        while(queue.size() > 0){
+            // poll the first node available
+            int node = queue.poll();
+            // add it to the resultant arrray
+            topologicalOrder.add(node);
+            // now iterate through the list of this particular node
+            // and decrement its outgoing edges nodes indegree value
+            // if that indegree is equal to 0 add them into the queue
+            for(int i = 0; i < adjList.get(node).size(); i++){
+                int val = adjList.get(node).get(i);
+                indegree[val]--;
+                if(indegree[val] == 0)
+                    queue.add(val);
+            }
+        }
+        return topologicalOrder;
+    }
+
+}
