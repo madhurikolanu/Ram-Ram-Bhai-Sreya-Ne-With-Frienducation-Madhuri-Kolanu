@@ -1,0 +1,83 @@
+//{ Driver Code Starts
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+class DriverClass {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+            int V = sc.nextInt();
+            int E = sc.nextInt();
+            for (int i = 0; i < V; i++)
+                list.add(i, new ArrayList<Integer>());
+            for (int i = 0; i < E; i++) {
+                int u = sc.nextInt();
+                int v = sc.nextInt();
+                list.get(u).add(v);
+            }
+            if (new Solution().isCyclic(V, list) == true)
+                System.out.println("1");
+            else
+                System.out.println("0");
+        }
+    }
+}
+// } Driver Code Ends
+
+
+/*Complete the function below*/
+
+class Solution {
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        // code here
+
+        // 1D array to keep track of incoming edges of each node
+        int[] indegree = new int[V];
+
+        // iterate through adjlist and update indegree array
+        for(int index = 0; index < V; index++){
+            for(int idx = 0; idx < adj.get(index).size(); idx++){
+                indegree[adj.get(index).get(idx)] += 1;
+            }
+        }
+
+        //declare a queue to identify the incoming edges of each node
+        Queue<Integer> queue = new LinkedList<>();
+
+        // iterate throu indegree array and if any value equals to 0 add it to queue
+        // as it does not have dependency
+        for(int index = 0; index < V; index++){
+            if(indegree[index] == 0)
+                queue.add(index);
+        }
+
+        // declare a count variable and intialize to 0 to identify whether cycle exists or not
+        int count = 0;
+        // iterate through queue until it is empty
+        while(queue.size() > 0){
+            // poll the first element in queue
+            int node = queue.poll();
+            // increment count variable
+            count++;
+            // iterate through the adjlist of this node and
+            // decrement indegree value
+            // if it is equal to 0 add to the queue
+            for(int index = 0; index < adj.get(node).size(); index++){
+                int val = adj.get(node).get(index);
+                indegree[val]--;
+                if(indegree[val] == 0)
+                    queue.add(val);
+            }
+        }
+        // if count is less than number of nodes then cycle exists
+        if(count < V)
+            return true;
+        // else cycle doesnt exists
+        return false;
+    }
+}
